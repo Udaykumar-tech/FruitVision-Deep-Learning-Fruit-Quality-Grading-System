@@ -1,0 +1,36 @@
+{
+  "label_to_idx": {
+    "Apple_Formalin-mixed": 0,
+    "Apple_Fresh": 1,
+    "Apple_Rotten": 2,
+    "Banana_Formalin-mixed": 3,
+    "Banana_Fresh": 4,
+    "Banana_Rotten": 5,
+    "Grape_Formalin-mixed": 6,
+    "Grape_Fresh": 7,
+    "Grape_Rotten": 8,
+    "Mango_Formalin-mixed": 9,
+    "Mango_Fresh": 10,
+    "Mango_Rotten": 11,
+    "Orange_Formalin-mixed": 12,
+    "Orange_Fresh": 13,
+    "Orange_Rotten": 14
+  },
+  "idx_to_label": {
+    "0": "Apple_Formalin-mixed",
+    "1": "Apple_Fresh",
+    "2": "Apple_Rotten",
+    "3": "Banana_Formalin-mixed",
+    "4": "Banana_Fresh",
+    "5": "Banana_Rotten",
+    "6": "Grape_Formalin-mixed",
+    "7": "Grape_Fresh",
+    "8": "Grape_Rotten",
+    "9": "Mango_Formalin-mixed",
+    "10": "Mango_Fresh",
+    "11": "Mango_Rotten",
+    "12": "Orange_Formalin-mixed",
+    "13": "Orange_Fresh",
+    "14": "Orange_Rotten"
+  }
+}

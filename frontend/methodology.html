@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Methodology · FruitVision</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <link rel="stylesheet" href="/css/styles.css" />
+  <style>
+    .toc-link {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.55rem 0.8rem;
+      border-radius: 8px;
+      color: var(--color-text-secondary);
+      text-decoration: none;
+      font-size: 0.88rem;
+      border-left: 2px solid transparent;
+      transition: all 0.15s ease;
+    }
+    .toc-link:hover {
+      background: var(--color-surface);
+      color: var(--color-text-primary);
+      border-left-color: var(--color-accent);
+    }
+    .toc-link .toc-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--color-accent);
+      width: 22px;
+      flex-shrink: 0;
+      font-weight: 600;
+    }
+    .scroll-spy-active {
+      color: var(--color-text-primary) !important;
+      background: var(--color-surface);
+      border-left-color: var(--color-accent) !important;
+    }
+
+    .doc-section { scroll-margin-top: 80px; }
+
+    .doc-section h2 {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 1.75rem;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+      color: var(--color-text-primary);
+    }
+    .doc-section h3 {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 1.2rem;
+      letter-spacing: -0.01em;
+      margin-top: 2rem;
+      margin-bottom: 0.6rem;
+      color: var(--color-text-primary);
+    }
+    .doc-section h4 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-bottom: 0.5rem;
+    }
+    .doc-section p {
+      color: var(--color-text-secondary);
+      line-height: 1.7;
+      margin-bottom: 1rem;
+      font-size: 0.96rem;
+    }
+    .doc-section ul, .doc-section ol {
+      color: var(--color-text-secondary);
+      line-height: 1.7;
+      margin-bottom: 1rem;
+      padding-left: 1.5rem;
+      font-size: 0.96rem;
+    }
+    .doc-section li { margin-bottom: 0.4rem; }
+    .doc-section li::marker { color: var(--color-accent); }
+    .doc-section strong, .doc-section b {
+      color: var(--color-text-primary);
+      font-weight: 600;
+    }
+    .doc-section code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.86em;
+      background: var(--color-bg-elevated);
+      padding: 0.15em 0.4em;
+      border-radius: 4px;
+      color: var(--color-accent);
+      border: 1px solid var(--color-border);
+    }
+
+    .step-box {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 1rem;
+      padding: 1.1rem 1.2rem;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      margin-bottom: 0.9rem;
+      transition: all 0.2s ease;
+    }
+    .step-box:hover {
+      border-color: var(--color-border-bright);
+      transform: translateX(2px);
+    }
+    .step-num {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: var(--color-accent-dim);
+      color: var(--color-accent);
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 0.92rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .step-content h5 {
+      font-weight: 700;
+      color: var(--color-text-primary);
+      margin-bottom: 0.3rem;
+      font-size: 1rem;
+    }
+    .step-content p {
+      font-size: 0.9rem;
+      color: var(--color-text-secondary);
+      margin-bottom: 0;
+      line-height: 1.6;
+    }
+
+    .formula-box {
+      background: var(--color-bg-elevated);
+      border: 1px solid var(--color-border);
+      border-left: 3px solid var(--color-accent);
+      border-radius: 10px;
+      padding: 1.2rem 1.4rem;
+      margin: 1.2rem 0;
+      overflow-x: auto;
+    }
+    .formula-box .formula-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: 0.6rem;
+    }
+    .formula-box .formula-where {
+      font-size: 0.85rem;
+      color: var(--color-text-muted);
+      margin-top: 0.7rem;
+      line-height: 1.5;
+    }
+
+    .arch-diagram {
+      background: var(--color-bg-elevated);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      padding: 1.5rem 1.2rem;
+      margin: 1.2rem 0;
+    }
+    .arch-flow {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      align-items: stretch;
+    }
+    .arch-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.7rem;
+      flex-wrap: wrap;
+    }
+    .arch-block {
+      padding: 0.7rem 1.1rem;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      color: var(--color-text-primary);
+      text-align: center;
+      min-width: 120px;
+      transition: all 0.2s ease;
+    }
+    .arch-block:hover {
+      border-color: var(--color-accent);
+      background: var(--color-accent-dim);
+    }
+    .arch-block-input  { border-color: var(--color-blue);   color: var(--color-blue); }
+    .arch-block-conv   { border-color: var(--color-orange); color: var(--color-orange); }
+    .arch-block-attn   { border-color: var(--color-green);  color: var(--color-green); }
+    .arch-block-output { border-color: var(--color-accent); color: var(--color-accent); background: var(--color-accent-dim); }
+    .arch-arrow {
+      color: var(--color-text-muted);
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+    .arch-arrow-down {
+      color: var(--color-text-muted);
+      font-size: 1.4rem;
+      align-self: center;
+      line-height: 1;
+    }
+
+    .info-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 10px;
+      padding: 1rem 1.2rem;
+      margin-bottom: 0.8rem;
+    }
+    .info-card .label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: 0.4rem;
+    }
+    .info-card .body {
+      font-size: 0.92rem;
+      color: var(--color-text-primary);
+      line-height: 1.55;
+    }
+
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.9rem;
+      margin: 1rem 0;
+    }
+    .compare-cell {
+      padding: 1rem 1.2rem;
+      border-radius: 10px;
+      border: 1px solid var(--color-border);
+      background: var(--color-surface);
+    }
+    .compare-bad  { border-left: 3px solid var(--color-danger); }
+    .compare-good { border-left: 3px solid var(--color-accent); }
+    .compare-cell .head {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+    }
+    .compare-bad  .head { color: var(--color-danger); }
+    .compare-good .head { color: var(--color-accent); }
+    .compare-cell .body { font-size: 0.92rem; line-height: 1.55; color: var(--color-text-primary); }
+
+    .ref-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+    .ref-table th {
+      text-align: left;
+      padding: 0.6rem 0.9rem;
+      background: var(--color-bg-elevated);
+      color: var(--color-text-muted);
+      font-size: 0.74rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .ref-table td {
+      padding: 0.7rem 0.9rem;
+      border-bottom: 1px solid var(--color-border);
+      color: var(--color-text-primary);
+    }
+    .ref-table td.mono { font-family: 'JetBrains Mono', monospace; font-size: 0.86rem; }
+    .ref-table tr:hover td { background: var(--color-surface); }
+
+    @media (max-width: 1024px) {
+      .compare-grid { grid-template-columns: 1fr; }
+      .arch-row { flex-direction: column; }
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+  <div id="navbar-root"></div>
+
+  <main class="flex-grow">
+
+    <section class="px-6 py-8">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-xs font-mono text-gray-500 tracking-widest uppercase mb-1">Project Documentation</div>
+        <h1 class="font-display text-3xl md:text-4xl mb-2">
+          <span class="gradient-text">Methodology</span> &amp; Design
+        </h1>
+        <p class="text-gray-400 max-w-3xl text-sm md:text-base">
+          The full project pipeline — every decision, formula, and architectural choice that took us
+          from raw FruitVision images to a deployable, explainable, multi-model classification system.
+        </p>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section class="px-6 pb-12">
+      <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <aside class="lg:col-span-3 lg:sticky lg:top-20 lg:self-start">
+          <div class="glass-card p-4">
+            <div class="text-xs font-mono uppercase tracking-widest text-gray-500 mb-3 px-2">Contents</div>
+            <nav class="flex flex-col gap-0.5" id="toc">
+              <a href="#problem"     class="toc-link"><span class="toc-num">01</span><span>Problem &amp; Scope</span></a>
+              <a href="#dataset"     class="toc-link"><span class="toc-num">02</span><span>Dataset</span></a>
+              <a href="#preparation" class="toc-link"><span class="toc-num">03</span><span>Data Preparation</span></a>
+              <a href="#leakage"     class="toc-link"><span class="toc-num">04</span><span>The Leakage Problem</span></a>
+              <a href="#augment"     class="toc-link"><span class="toc-num">05</span><span>Augmentation Pipeline</span></a>
+              <a href="#models"      class="toc-link"><span class="toc-num">06</span><span>Model Architectures</span></a>
+              <a href="#training"    class="toc-link"><span class="toc-num">07</span><span>Training Regime</span></a>
+              <a href="#pathw"       class="toc-link"><span class="toc-num">08</span><span>Path W Supervision</span></a>
+              <a href="#evaluation"  class="toc-link"><span class="toc-num">09</span><span>Evaluation</span></a>
+              <a href="#xai"         class="toc-link"><span class="toc-num">10</span><span>Explainable AI</span></a>
+              <a href="#deployment"  class="toc-link"><span class="toc-num">11</span><span>Deployment</span></a>
+              <a href="#tools"       class="toc-link"><span class="toc-num">12</span><span>Tools &amp; Stack</span></a>
+            </nav>
+          </div>
+        </aside>
+
+        <div class="lg:col-span-9 space-y-16">
+
+          <article id="problem" class="doc-section">
+            <h4>Section 01</h4>
+            <h2>Problem &amp; Scope</h2>
+            <p>
+              The objective is to develop a robust, non-destructive system that classifies five common fruits
+              (Apple, Banana, Grape, Mango, Orange) into three biological states:
+              <strong>Fresh</strong>, <strong>Rotten</strong>, and <strong>Formalin-Mixed</strong>.
+              Five fruits times three conditions yields 15 distinct classes.
+            </p>
+
+            <h3>The Formalin Challenge</h3>
+            <p>
+              The Formalin-Mixed class presents a unique challenge: chemical preservation
+              <em>masks</em> the natural decay process. Fruits soaked in 10% formalin for 30 minutes and
+              photographed 48 hours later look <strong>visually indistinguishable</strong> from genuinely
+              fresh fruit to a standard convolutional network. The discriminative signal is in subtle
+              skin-pore patterns, an unnatural sheen, and the absence of expected aging markers — all of
+              which require the model to attend to fine-grained surface textures rather than holistic
+              fruit shape or color.
+            </p>
+
+            <h3>Why this matters</h3>
+            <p>
+              Formalin (formaldehyde) is illegal as a food preservative in most jurisdictions. Vendors
+              sometimes apply it to extend shelf life, exposing consumers to a known carcinogen.
+              Detection is currently performed via chemical lab tests — slow, destructive, expensive,
+              and unscalable. A non-destructive image-based detector running on a phone or edge device
+              would enable point-of-purchase verification at scale.
+            </p>
+
+            <h3>Project goals</h3>
+            <ul>
+              <li><strong>Multi-class classification</strong> — 15 classes covering 5 fruits × 3 conditions.</li>
+              <li><strong>High Formalin recall</strong> — missing chemically-treated fruit is the worst error mode.</li>
+              <li><strong>Background invariance</strong> — must work across studio shots, real markets, kitchens.</li>
+              <li><strong>Explainability</strong> — Grad-CAM must show the model attending to fruit, not props.</li>
+              <li><strong>Deployment readiness</strong> — at least one model viable for mobile/edge inference.</li>
+            </ul>
+          </article>
+
+          <article id="dataset" class="doc-section">
+            <h4>Section 02</h4>
+            <h2>The FruitVision Dataset</h2>
+            <p>
+              We use the <strong>FruitVision</strong> benchmark — a 10,154-image dataset of expert-validated
+              fruit samples covering all 15 target classes, captured during 2024 using three different
+              mobile devices to ensure sensor-invariant learning.
+            </p>
+
+            <div class="grid md:grid-cols-3 gap-3 my-6">
+              <div class="info-card">
+                <div class="label">Total Images</div>
+                <div class="body"><span class="font-mono text-lg font-bold">10,154</span><br/><span class="text-xs text-gray-500">all 15 classes combined</span></div>
+              </div>
+              <div class="info-card">
+                <div class="label">Resolution</div>
+                <div class="body"><span class="font-mono text-lg font-bold">Variable</span><br/><span class="text-xs text-gray-500">resized to 512×512 for masks, 256×256 for training</span></div>
+              </div>
+              <div class="info-card">
+                <div class="label">Capture Devices</div>
+                <div class="body"><span class="font-mono text-lg font-bold">3 mobile phones</span><br/><span class="text-xs text-gray-500">sensor diversity for generalization</span></div>
+              </div>
+            </div>
+
+            <h3>The formalin protocol</h3>
+            <p>
+              Formalin samples were generated by soaking fruits in <strong>10% formalin solution for 30 minutes</strong>,
+              then photographing them <strong>48 hours later</strong>. This delay is critical — it gives the
+              chemical effect time to manifest as the "unnatural perfection" or subtle sheen that becomes
+              the primary discriminative signal. Earlier or later capture windows produce visually different
+              effects.
+            </p>
+
+            <h3>Why this dataset is hard</h3>
+            <ul>
+              <li><strong>Subtle inter-class differences</strong> — Fresh and Formalin-mixed share most visual properties.</li>
+              <li><strong>Inter-fruit visual diversity</strong> — Grape (small clusters) and Mango (large elongated) have wildly different shape priors.</li>
+              <li><strong>Photo session bias</strong> — multiple shots per fruit lead to near-duplicates.</li>
+              <li><strong>Background uniformity</strong> — most photos have similar studio backgrounds, creating shortcut-learning risk.</li>
+            </ul>
+          </article>
+
+          <article id="preparation" class="doc-section">
+            <h4>Section 03</h4>
+            <h2>Data Preparation</h2>
+            <p>
+              Raw images cannot be trained on directly. We perform a multi-stage preparation pipeline:
+              integrity audit, segmentation mask generation, and stratified splitting.
+            </p>
+
+            <div class="step-box">
+              <div class="step-num">01</div>
+              <div class="step-content">
+                <h5>Dataset Audit</h5>
+                <p>Indexed all 10,154 files; verified zero corruption; confirmed all images are RGB JPEG.
+                File sizes range 20 KB – 3.7 MB with 90 KB median, totaling 0.9 GB on disk.</p>
+              </div>
+            </div>
+
+            <div class="step-box">
+              <div class="step-num">02</div>
+              <div class="step-content">
+                <h5>Mask Generation with MobileSAM</h5>
+                <p>For each image, we run <strong>MobileSAM</strong> (a lightweight Segment Anything variant)
+                with a center-point prompt to extract a pixel-perfect binary mask of the fruit region.
+                A grid-prompt fallback fires when the area ratio is degenerate (&lt;3% or &gt;97%). This produces
+                ~9,800 high-quality masks; the rest are filtered by area sanity checks.</p>
+              </div>
+            </div>
+
+            <div class="step-box">
+              <div class="step-num">03</div>
+              <div class="step-content">
+                <h5>Background Image Bank</h5>
+                <p>We pull ~880 indoor scene images from the <strong>MIT Indoor 67</strong> dataset on
+                Hugging Face — 12 fruit-photography-relevant categories: kitchen, restaurant_kitchen,
+                pantry, deli, bakery, grocerystore, dining_room, restaurant, buffet, mall, warehouse, closet.
+                These are kept GPU-resident as a uint8 tensor for fast augmentation.</p>
+              </div>
+            </div>
+
+            <div class="step-box">
+              <div class="step-num">04</div>
+              <div class="step-content">
+                <h5>Group-Aware Train/Val/Test Split</h5>
+                <p>The most important preparation step. We use perceptual hash clustering to identify
+                near-duplicate photo sessions, then split <strong>entire clusters</strong> into either
+                train, val, or test. This prevents the leakage problem detailed in section 04 and
+                yields the final ratios: 70 % / 15 % / 15 %.</p>
+              </div>
+            </div>
+
+            <div class="step-box">
+              <div class="step-num">05</div>
+              <div class="step-content">
+                <h5>RAM Cache</h5>
+                <p>All 9,727 valid images and their masks are decoded once and held as uint8 NumPy arrays
+                in RAM. Total cache footprint: 2.55 GB at 256×256. This eliminates disk I/O during training
+                — every batch is built directly from RAM, then transferred to GPU.</p>
+              </div>
+            </div>
+          </article>
+
+          <article id="leakage" class="doc-section">
+            <h4>Section 04 · Critical Course Correction</h4>
+            <h2>The Leakage Problem We Caught Mid-Project</h2>
+            <p>
+              Our first model trained with a standard random stratified split achieved
+              <strong>99.73% test accuracy</strong> with 100% Formalin recall — numbers that
+              looked too good to be true. They were.
+            </p>
+
+            <p>
+              When we computed Grad-CAM heatmaps to verify the model was looking at fruit, the
+              <strong>focus lift was 0.73×</strong> — worse than random. The model was achieving
+              99% by classifying based on background lighting, shadow direction, and table textures
+              specific to each photo session. Multiple shots from the same session had landed in
+              both train and test sets, letting the model memorize session-level cues.
+            </p>
+
+            <div class="compare-grid">
+              <div class="compare-cell compare-bad">
+                <div class="head">Naive Random Split</div>
+                <div class="body">
+                  10,154 photos randomly assigned to train/val/test with class stratification.
+                  Photos from the same fruit's photo session can land in different splits.
+                  <br/><br/>
+                  <strong class="text-red-300">Result: 8.4% near-duplicate leakage between train and test.
+                  Test accuracy meaningless.</strong>
+                </div>
+              </div>
+              <div class="compare-cell compare-good">
+                <div class="head">Group-Aware Split</div>
+                <div class="body">
+                  Cluster near-duplicates via 256-bit perceptual hash + Hamming distance ≤ 12.
+                  Whole clusters go to one split via <code>sklearn.GroupShuffleSplit</code>.
+                  <br/><br/>
+                  <strong class="text-green-300">Result: zero group overlap. Test accuracy honest.
+                  Final numbers reflect actual generalization.</strong>
+                </div>
+              </div>
+            </div>
+
+            <h3>The perceptual hash clustering algorithm</h3>
+            <div class="formula-box">
+              <div class="formula-label">Perceptual Hash (16-bit difference hash)</div>
+              <p>$$ H(I) = \{\, \mathbb{1}[g(x, y+1) > g(x, y)] \,\}_{x=1..16, y=1..16} $$</p>
+              <div class="formula-where">
+                Where \(g(x,y)\) is the pixel intensity of the image resized to 17×16 grayscale.
+                The hash captures relative brightness gradients — robust to small color shifts but
+                sensitive to compositional changes.
+              </div>
+            </div>
+
+            <div class="formula-box">
+              <div class="formula-label">Cluster Membership (Union-Find)</div>
+              <p>$$ \text{cluster}(I_a, I_b) = \mathbb{1}\big[ \text{Hamming}(H(I_a), H(I_b)) \leq 12 \big] $$</p>
+              <div class="formula-where">
+                Two images are merged into the same cluster if their hashes differ in ≤ 12 of 256 bits.
+                We restrict comparisons to within the same class (no cross-class clustering) since visually
+                similar images of different classes are not duplicates.
+              </div>
+            </div>
+
+            <h3>Outcome</h3>
+            <p>
+              After regrouping, accuracy dropped from 99.73 % to a more honest 94.85 % — but for the
+              first time, the focus lift began responding to attention supervision instead of being
+              stuck at random. The "drop" is the point at which the project actually started measuring
+              generalization rather than memorization.
+            </p>
+          </article>
+
+          <article id="augment" class="doc-section">
+            <h4>Section 05</h4>
+            <h2>The Augmentation Pipeline</h2>
+            <p>
+              Augmentation is performed entirely on GPU using <strong>Kornia</strong>, with one pass per batch.
+              The pipeline serves two purposes: regularization (preventing overfitting) and
+              <em>active background bias suppression</em> (forcing the model to look at the fruit).
+            </p>
+
+            <h3>The 8-step AggressiveAug pipeline</h3>
+
+            <div class="step-box">
+              <div class="step-num">01</div>
+              <div class="step-content">
+                <h5>Mask Edge Erosion · p = 0.30</h5>
+                <p>Random binary erosion with kernel size ∈ {3, 5, 7}. Prevents the model from memorizing
+                exact mask-edge shapes as a class signature.</p>
+              </div>
+            </div>
+
+            <div class="step-box">
+              <div class="step-num">02</div>
+              <div class="step-content">
+                <h5>Background Replacement · p = 0.95</h5>
+                <p>The fruit pixels (selected by SAM mask) are composited onto a random kitchen/market
+                background sampled from the GPU-resident bank. Forces the model to be invariant to
+                whatever lies behind the fruit.</p>
+              </div>
+            </div>
+
+            <div class="step-box">
+              <div class="step-num">03</div>
+              <div class="step-content">
+                <h5>Background Blackout · p = 0.20</h5>
+                <p>The background is set to pure black, leaving only the fruit visible.
+                Confronts the model with the question: "can you classify based on fruit alone?"</p>
+              </div>
+            </div>
+
+            <div class="step-box">
+              <div class="step-num">04</div>
+              <div class="step-content">
+                <h5>Localized CLAHE · p = 0.70</h5>
+                <p>Contrast Limited Adaptive Histogram Equalization, applied <strong>only inside the fruit mask</strong>.
+                Enhances fine skin texture and pore detail (the discriminative signal for Formalin)
+                without amplifying background noise.</p>
+              </div>
+            </div>
+
+            <div class="step-box">
+              <div class="step-num">05</div>
+              <div class="step-content">
+                <h5>Spatial Transforms · p = 0.4 each</h5>
+                <p>Sequential horizontal flip → vertical flip → rotation (±30°) → affine
+                (translate ±10%, scale 0.85–1.15) → perspective (distortion 0.3). Each independent.</p>
+              </div>
+            </div>
+
+            <div class="step-box">
+              <div class="step-num">06</div>
+              <div class="step-content">
+                <h5>Constrained Color Jitter · p = 0.7</h5>
+                <p>Brightness ±20%, contrast ±20%, saturation ±20%, <strong>hue ±0.05 only</strong>.
+                Hue is constrained because excessive shifts would destroy the subtle color indicators
+                of formalin treatment and decay.</p>
+              </div>
+            </div>
+
+            <div class="step-box">
+              <div class="step-num">07</div>
+              <div class="step-content">
+                <h5>RandomErasing · p = 0.35</h5>
+                <p>Random rectangular regions (5–20% of area) are erased to a random color. Forces
+                the model to make decisions from partial views.</p>
+              </div>
+            </div>
+
+            <div class="step-box">
+              <div class="step-num">08</div>
+              <div class="step-content">
+                <h5>CutMix / MixUp · activates at epoch 5</h5>
+                <p>Sample-mixing operations introduced after warmup, with α ramping from 0.1 to 0.5
+                over epochs 5–15. Smooths decision boundaries and improves calibration.</p>
+              </div>
+            </div>
+
+            <div class="formula-box">
+              <div class="formula-label">CutMix Mixed Loss</div>
+              <p>$$ \mathcal{L}_{\text{cutmix}} = \lambda \cdot \mathcal{L}_{CE}(y, y_a) + (1-\lambda) \cdot \mathcal{L}_{CE}(y, y_b) $$</p>
+              <div class="formula-where">
+                Where \(\lambda\) is the area ratio of the unmixed region. Final image is constructed by
+                pasting a rectangular crop from sample \(b\) onto sample \(a\).
+              </div>
+            </div>
+
+            <p class="mt-6">
+              Image normalization (ImageNet mean and std) is applied last, after all spatial and color
+              transformations. The whole pipeline runs in ~150 ms per batch of 32 on the RTX 3070.
+            </p>
+          </article>
+
+          <article id="models" class="doc-section">
+            <h4>Section 06</h4>
+            <h2>Three Hybrid Architectures</h2>
+            <p>
+              We deliberately picked three architectures with <strong>different design philosophies</strong>
+              to compare the tradeoffs between accuracy, interpretability, and deployment readiness.
+            </p>
+
+            <h3>Model A · EfficientNet+SwinT (Parallel Late Fusion)</h3>
+            <p>
+              The accuracy-first model. Two ImageNet-pretrained backbones (EfficientNetV2-S +
+              SwinV2-Tiny) process the input in parallel. Their global-pooled features are concatenated
+              and passed through a 2-layer MLP head to produce 15 logits.
+            </p>
+
+            <div class="arch-diagram">
+              <div class="arch-flow">
+                <div class="arch-row">
+                  <div class="arch-block arch-block-input">Input · 256×256 RGB</div>
+                </div>
+                <div class="arch-arrow-down">↓</div>
+                <div class="arch-row">
+                  <div class="arch-block arch-block-conv">EfficientNetV2-S<br/><span class="text-xs opacity-70">22M params</span></div>
+                  <span class="arch-arrow">+</span>
+                  <div class="arch-block arch-block-attn">SwinV2-Tiny<br/><span class="text-xs opacity-70">28M params</span></div>
+                </div>
+                <div class="arch-arrow-down">↓</div>
+                <div class="arch-row">
+                  <div class="arch-block">Concat · 1280 + 768 = 2048-d</div>
+                </div>
+                <div class="arch-arrow-down">↓</div>
+                <div class="arch-row">
+                  <div class="arch-block">LayerNorm → Linear(512) → GELU → Linear(15)</div>
+                </div>
+                <div class="arch-arrow-down">↓</div>
+                <div class="arch-row">
+                  <div class="arch-block arch-block-output">Logits · 15 classes</div>
+                </div>
+              </div>
+            </div>
+
+            <p><strong>Why this design:</strong> EfficientNetV2's MBConv blocks excel at local texture extraction;
+              SwinV2's shifted-window attention captures global spatial relationships. Combining them gives the
+              model both views simultaneously. Total parameters: <strong>49 M</strong>.</p>
+
+            <h3>Model B · DBA-ViNet (Dual-Branch Attention-Guided)</h3>
+            <p>
+              The interpretability-focused model. Based on Srinivasan et al. 2025 (BMC Plant Biology). One
+              EfficientNetV2-B1 backbone produces both mid-level and high-level features. A learned
+              attention gate over the high-level features acts as a mask on the mid-level features
+              before they enter a small transformer (4 blocks, 192 dim, 4 heads). A cross-attention
+              fusion combines local transformer output with global pooled features.
+            </p>
+
+            <div class="arch-diagram">
+              <div class="arch-flow">
+                <div class="arch-row">
+                  <div class="arch-block arch-block-input">Input · 256×256 RGB</div>
+                </div>
+                <div class="arch-arrow-down">↓</div>
+                <div class="arch-row">
+                  <div class="arch-block arch-block-conv">EfficientNetV2-B1 backbone</div>
+                </div>
+                <div class="arch-arrow-down">↓</div>
+                <div class="arch-row">
+                  <div class="arch-block">Mid features · 16×16×112</div>
+                  <span class="arch-arrow">+</span>
+                  <div class="arch-block">High features · 8×8×320</div>
+                </div>
+                <div class="arch-arrow-down">↓</div>
+                <div class="arch-row">
+                  <div class="arch-block arch-block-attn">Attention Gate<br/><span class="text-xs opacity-70">1×1 conv → sigmoid</span></div>
+                </div>
+                <div class="arch-arrow-down">↓</div>
+                <div class="arch-row">
+                  <div class="arch-block">Gated Mid features (fruit-focused)</div>
+                </div>
+                <div class="arch-arrow-down">↓</div>
+                <div class="arch-row">
+                  <div class="arch-block arch-block-attn">4 × Transformer Blocks<br/><span class="text-xs opacity-70">192 dim, 4 heads, MLP×2</span></div>
+                </div>
+                <div class="arch-arrow-down">↓</div>
+                <div class="arch-row">
+                  <div class="arch-block arch-block-attn">Cross-Attention<br/><span class="text-xs opacity-70">local Q ← global K,V</span></div>
+                </div>
+                <div class="arch-arrow-down">↓</div>
+                <div class="arch-row">
+                  <div class="arch-block arch-block-output">MLP head → 15 logits</div>
+                </div>
+              </div>
+            </div>
+
+            <p><strong>Why this design:</strong> The attention gate is <em>architectural</em>, not just a Grad-CAM artifact.
+              When Path W supervises this gate directly (see section 08), the supervision happens at a true
+              spatial mechanism, leading to far stronger interpretability than CAM-style supervision can achieve.
+              Total parameters: <strong>12 M</strong> — the smallest of the three.</p>
+
+            <h3>Model C · MobileNetV4-Hybrid-Large</h3>
+            <p>
+              The deployment model. Google's MobileNetV4 architecture (ECCV 2024) built on
+              <strong>Universal Inverted Bottleneck (UIB) blocks</strong> + <strong>Mobile MQA attention</strong>.
+              UIB unifies five micro-architectures (IB, ConvNext, FFN, ExtraDW, half-IB) into one searchable
+              block. Mobile MQA shares a single Key/Value across all attention heads — a 39% speedup over
+              standard multi-head attention with no accuracy loss.
+            </p>
+
+            <div class="arch-diagram">
+              <div class="arch-flow">
+                <div class="arch-row">
+                  <div class="arch-block arch-block-input">Input · 256×256 RGB</div>
+                </div>
+                <div class="arch-arrow-down">↓</div>
+                <div class="arch-row">
+                  <div class="arch-block arch-block-conv">Stem Conv (3×3, stride 2)</div>
+                </div>
+                <div class="arch-arrow-down">↓</div>
+                <div class="arch-row">
+                  <div class="arch-block arch-block-conv">Stage 1–4 · UIB blocks<br/><span class="text-xs opacity-70">depthwise + pointwise + ExtraDW</span></div>
+                </div>
+                <div class="arch-arrow-down">↓</div>
+                <div class="arch-row">
+                  <div class="arch-block arch-block-attn">Stage 5 · UIB + Mobile MQA<br/><span class="text-xs opacity-70">shared K/V across heads</span></div>
+                </div>
+                <div class="arch-arrow-down">↓</div>
+                <div class="arch-row">
+                  <div class="arch-block">Adaptive Pool → 1280-d</div>
+                </div>
+                <div class="arch-arrow-down">↓</div>
+                <div class="arch-row">
+                  <div class="arch-block arch-block-output">MLP head → 15 logits</div>
+                </div>
+              </div>
+            </div>
+
+            <p><strong>Why this design:</strong> Mobile MQA produces unusually concentrated attention because
+              the shared Key/Value forces all heads to agree on what's important — a side-effect that
+              translates into much higher interpretability under Path W supervision. Total parameters:
+              <strong>37 M</strong>. Pretrained at 384×384 on ImageNet.</p>
+
+            <div class="formula-box">
+              <div class="formula-label">Mobile MQA (Multi-Query Attention)</div>
+              <p>$$ \text{MQA}(X) = \text{Concat}_{h=1..H}\big(\text{softmax}(Q_h K^\top / \sqrt{d_k}) V \big) $$</p>
+              <div class="formula-where">
+                Where each head \(h\) has its own query \(Q_h\), but Key \(K\) and Value \(V\) are shared
+                across all heads. This collapses the parameter count of attention by ~33% while empirically
+                losing nothing in accuracy.
+              </div>
+            </div>
+          </article>
+
+          <article id="training" class="doc-section">
+            <h4>Section 07</h4>
+            <h2>Training Regime</h2>
+            <p>
+              All three models trained for <strong>30 epochs</strong> on the same group-aware splits with the
+              same AggressiveAug pipeline, differing only in batch size and accumulation steps to fit each
+              model into 8 GB VRAM.
+            </p>
+
+            <table class="ref-table">
+              <thead>
+                <tr><th>Hyperparameter</th><th>Value</th><th>Why</th></tr>
+              </thead>
+              <tbody>
+                <tr><td class="mono">Optimizer</td><td class="mono">AdamW</td><td class="text-sm">Standard for transformer-containing architectures</td></tr>
+                <tr><td class="mono">Learning rate</td><td class="mono">3e-4</td><td class="text-sm">Mid-range for fine-tuning ImageNet-pretrained backbones</td></tr>
+                <tr><td class="mono">Weight decay</td><td class="mono">0.05</td><td class="text-sm">Strong regularization for small dataset</td></tr>
+                <tr><td class="mono">LR scheduler</td><td class="mono">CosineAnnealing</td><td class="text-sm">Smooth decay over 30 epochs</td></tr>
+                <tr><td class="mono">Label smoothing</td><td class="mono">0.1</td><td class="text-sm">Prevents overconfidence at Fresh ↔ Formalin boundary</td></tr>
+                <tr><td class="mono">Batch size</td><td class="mono">32 / 32 / 48</td><td class="text-sm">Per model A/B/C, fitted to VRAM</td></tr>
+                <tr><td class="mono">Grad accumulation</td><td class="mono">2 steps</td><td class="text-sm">Effective batch 64 / 64 / 96</td></tr>
+                <tr><td class="mono">Mixed precision</td><td class="mono">AMP fp16</td><td class="text-sm">~40% speedup, minor VRAM savings</td></tr>
+                <tr><td class="mono">Random seed</td><td class="mono">42</td><td class="text-sm">Reproducibility across all experiments</td></tr>
+              </tbody>
+            </table>
+
+            <h3>Loss function</h3>
+            <p>
+              The loss function combines soft cross-entropy (for CutMix/MixUp soft labels), label smoothing,
+              and the Path W attention loss with epoch-dependent λ:
+            </p>
+
+            <div class="formula-box">
+              <div class="formula-label">Combined Training Loss</div>
+              <p>$$ \mathcal{L}_{\text{total}} = -\sum_{c=1}^{15} \tilde{y}_c \log\,\text{softmax}(z_c) + \lambda(t) \cdot \mathcal{L}_{\text{Path W}} $$</p>
+              <p>$$ \tilde{y}_c = (1 - \epsilon)\, y_c + \frac{\epsilon}{C} $$</p>
+              <div class="formula-where">
+                Where \(\tilde{y}_c\) is the smoothed soft label (\(\epsilon = 0.1\)),
+                \(y_c\) is the one-hot or CutMix-mixed target, \(z_c\) is the logit,
+                and \(\lambda(t)\) is the time-varying attention loss weight (see section 08).
+              </div>
+            </div>
+          </article>
+
+          <article id="pathw" class="doc-section">
+            <h4>Section 08 · Original contribution</h4>
+            <h2>Path W: Soft Mask Attention Supervision</h2>
+            <p>
+              Path W is the technique we developed to push focus lift above 1.0× (random) without
+              hurting test accuracy. It supervises each model's spatial attention with the SAM-generated
+              fruit mask, but as a <strong>soft regularizer</strong>, not a hard constraint.
+            </p>
+
+            <h3>The core idea</h3>
+            <p>
+              We don't force the model to look at fruit. We add a small loss penalty proportional to
+              how much of the model's attention falls <em>outside</em> the fruit mask. The model is
+              free to look anywhere — but pays a tax for looking off-target.
+            </p>
+
+            <div class="formula-box">
+              <div class="formula-label">Outside-Mask Penalty</div>
+              <p>$$ \mathcal{L}_{\text{Path W}} = \frac{1}{B}\sum_{b=1}^{B} \sum_{i,j} \frac{A_{b,i,j}}{\sum_{i',j'} A_{b,i',j'}} \cdot (1 - M_{b,i,j}) $$</p>
+              <div class="formula-where">
+                Where \(A\) is the model's spatial attention map (a class-aware CAM for Models A and C,
+                or the explicit attention gate for Model B), normalized to sum to 1 per sample.
+                \(M\) is the binary fruit mask. The product is summed over outside-mask pixels.
+                Lower is better — zero means all attention falls inside the fruit.
+              </div>
+            </div>
+
+            <h3>Lambda schedule</h3>
+            <p>
+              The weight \(\lambda(t)\) is <strong>not constant</strong>. Path W is disabled for the first
+              3 epochs (warmup), then ramps linearly to its final value over 5 epochs. This lets the model
+              first learn classification basics before being pushed to focus on fruit specifically.
+            </p>
+
+            <div class="formula-box">
+              <div class="formula-label">Lambda Schedule</div>
+              <p>$$ \lambda(t) = \begin{cases} 0 & t < 3 \\ \lambda_{\max} \cdot \min(1, \frac{t-3}{5}) & t \geq 3 \end{cases} $$</p>
+              <div class="formula-where">
+                Where \(t\) is the current epoch and \(\lambda_{\max} = 0.05\) for Models A and C
+                (CAM-based supervision), or \(0.10\) for Model B (architectural attention gate).
+                Model B uses double weight because supervising an explicit single-channel sigmoid
+                gate can take stronger pull without destabilizing learned features.
+              </div>
+            </div>
+
+            <h3>How attention is extracted per model</h3>
+            <ul>
+              <li><strong>Model A (EffNet+SwinT):</strong> The classifier weights of the head layer are
+                projected back through the fc1 layer to produce a class-aware CAM weight on the
+                EfficientNet feature map. This is a single matmul — no second backward pass.</li>
+              <li><strong>Model B (DBA-ViNet):</strong> The attention gate output is supervised <em>directly</em>.
+                It is a 1-channel sigmoid map, so the supervision is exact, not derived.</li>
+              <li><strong>Model C (MobileNetV4):</strong> Same CAM strategy as Model A, applied to the
+                final UIB block features.</li>
+            </ul>
+
+            <h3>Why this works</h3>
+            <p>
+              Path W is a <em>structured prior</em>. It tells the model where to look without telling it
+              what features to find. Given that ImageNet-pretrained backbones already produce strong
+              visual features, the only thing they lack is the bias toward looking at the actual subject.
+              Path W adds exactly that bias — and our results show it doesn't hurt accuracy:
+              MobileNetV4 jumped from 1.46× to 4.62× focus lift, with test accuracy staying within 2 points
+              of the unrestricted baseline.
+            </p>
+          </article>
+
+          <article id="evaluation" class="doc-section">
+            <h4>Section 09</h4>
+            <h2>Evaluation Methodology</h2>
+            <p>
+              Evaluation goes beyond standard accuracy because the project's success criteria
+              (Section 7 of the project report) demand interpretability and background invariance,
+              not just classification correctness.
+            </p>
+
+            <h3>Standard metrics</h3>
+            <ul>
+              <li><strong>Test accuracy:</strong> fraction of test samples correctly classified.</li>
+              <li><strong>Per-class precision, recall, F1:</strong> with special attention to Formalin classes.</li>
+              <li><strong>Confusion matrix:</strong> reveals exactly where each model fails (Fresh ↔ Formalin is the dominant axis).</li>
+              <li><strong>Mean confidence:</strong> average max softmax probability — a lower number indicates better calibration.</li>
+            </ul>
+
+            <h3>XAI metrics (the harder part)</h3>
+            <div class="formula-box">
+              <div class="formula-label">Focus Score (per image)</div>
+              <p>$$ \text{focus}(I) = \frac{\sum_{i,j} A_{i,j} \cdot M_{i,j}}{\sum_{i,j} A_{i,j} + \varepsilon} $$</p>
+              <div class="formula-where">
+                Fraction of total Grad-CAM energy that falls inside the fruit mask. \(A\) is the heatmap,
+                \(M\) the binary mask. \(\varepsilon = 10^{-9}\) to avoid division by zero.
+              </div>
+            </div>
+
+            <div class="formula-box">
+              <div class="formula-label">Focus Lift (aggregate)</div>
+              <p>$$ \text{lift} = \frac{\overline{\text{focus}(I)}}{\overline{\text{mask\_area}(I)\,/\,\text{img\_area}}} $$</p>
+              <div class="formula-where">
+                Mean focus score divided by mean mask-area ratio. A lift of 1.0 means random — the model
+                attends to fruit no more than chance would predict given its size in the image.
+                Lift &gt; 1.8 is considered "trustworthy" in XAI literature.
+              </div>
+            </div>
+
+            <h3>Stress tests</h3>
+            <ul>
+              <li><strong>Background invariance test:</strong> 100 test images composited onto random
+                unfamiliar backgrounds (markets, kitchens, outdoor scenes). Models must maintain
+                accuracy &gt; 90% per the project report's Section 7 criteria.</li>
+              <li><strong>Inference latency:</strong> single-image and batch-32 forward pass times under
+                AMP, measured on the deployment hardware.</li>
+              <li><strong>Visual XAI inspection:</strong> Grad-CAM heatmaps for one sample per class are
+                visually inspected to verify attention falls on fruit-skin texture, not background or shape.</li>
+            </ul>
+          </article>
+
+          <article id="xai" class="doc-section">
+            <h4>Section 10</h4>
+            <h2>Explainable AI Implementation</h2>
+            <p>
+              We use <strong>Grad-CAM</strong> from the <code>pytorch-grad-cam</code> library, with
+              carefully selected target layers per model. The choice of target layer significantly
+              affects the produced heatmap.
+            </p>
+
+            <h3>Target layer selection</h3>
+            <table class="ref-table">
+              <thead><tr><th>Model</th><th>Target Layer</th><th>Why</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td class="mono">EffNet+SwinT</td>
+                  <td class="mono">effnet.blocks[-1]</td>
+                  <td class="text-sm">Last MBConv block in the EfficientNet branch — captures rich texture features before final pooling</td>
+                </tr>
+                <tr>
+                  <td class="mono">DBA-ViNet</td>
+                  <td class="mono">global_backbone.blocks[-1]</td>
+                  <td class="text-sm">Last block of the global EfficientNetV2-B1 backbone — same rationale</td>
+                </tr>
+                <tr>
+                  <td class="mono">MobileNetV4</td>
+                  <td class="mono">backbone.blocks[-1]</td>
+                  <td class="text-sm">Last UIB stage just before pooling — preserves fine spatial detail</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h3>Grad-CAM formulation</h3>
+            <div class="formula-box">
+              <div class="formula-label">Grad-CAM Heatmap</div>
+              <p>$$ L^c_{\text{Grad-CAM}} = \text{ReLU}\left(\sum_k \alpha^c_k A^k\right) $$</p>
+              <p>$$ \alpha^c_k = \frac{1}{Z}\sum_{i,j} \frac{\partial y^c}{\partial A^k_{i,j}} $$</p>
+              <div class="formula-where">
+                For predicted class \(c\), \(\alpha^c_k\) is the global-pooled gradient of the class
+                score with respect to feature map \(A^k\), and \(Z\) is the spatial size. The ReLU keeps
+                only positive influences. The result is a 8×8 spatial map at the last convolutional layer,
+                upsampled to 256×256 for visualization.
+              </div>
+            </div>
+
+            <h3>Interpretation pipeline</h3>
+            <ol>
+              <li>Run forward pass to get predicted class \(c\)</li>
+              <li>Backward pass to compute \(\partial y^c / \partial A^k\) for each feature map \(k\)</li>
+              <li>Global-average-pool the gradients to get channel weights \(\alpha^c_k\)</li>
+              <li>Linear combination of feature maps weighted by gradients</li>
+              <li>ReLU to discard negative contributions</li>
+              <li>Bilinear upsample to input resolution</li>
+              <li>Normalize to [0, 1] and overlay on original image</li>
+            </ol>
+          </article>
+
+          <article id="deployment" class="doc-section">
+            <h4>Section 11</h4>
+            <h2>Deployment</h2>
+            <p>
+              The web demo serves all three models from a single FastAPI Python backend. Models are
+              loaded into memory once at startup and held in memory for the entire server lifetime.
+              Requests are served synchronously: preprocess → model A inference → model B → model C
+              → 3 Grad-CAMs → response.
+            </p>
+
+            <h3>Backend architecture</h3>
+            <div class="arch-diagram">
+              <div class="arch-flow">
+                <div class="arch-row">
+                  <div class="arch-block arch-block-input">Browser · Upload or webcam capture</div>
+                </div>
+                <div class="arch-arrow-down">↓</div>
+                <div class="arch-row">
+                  <div class="arch-block">multipart/form-data POST · /api/predict</div>
+                </div>
+                <div class="arch-arrow-down">↓</div>
+                <div class="arch-row">
+                  <div class="arch-block arch-block-conv">FastAPI handler · validate</div>
+                </div>
+                <div class="arch-arrow-down">↓</div>
+                <div class="arch-row">
+                  <div class="arch-block">Preprocess · resize 256² + ImageNet normalize</div>
+                </div>
+                <div class="arch-arrow-down">↓</div>
+                <div class="arch-row">
+                  <div class="arch-block arch-block-attn">Model A inference + Grad-CAM</div>
+                  <span class="arch-arrow">+</span>
+                  <div class="arch-block arch-block-attn">Model B inference + Grad-CAM</div>
+                  <span class="arch-arrow">+</span>
+                  <div class="arch-block arch-block-attn">Model C inference + Grad-CAM</div>
+                </div>
+                <div class="arch-arrow-down">↓</div>
+                <div class="arch-row">
+                  <div class="arch-block">Format predictions · apply 35% / 75% thresholds</div>
+                </div>
+                <div class="arch-arrow-down">↓</div>
+                <div class="arch-row">
+                  <div class="arch-block arch-block-output">JSON response with base64 Grad-CAM images</div>
+                </div>
+              </div>
+            </div>
+
+            <h3>Display logic</h3>
+            <p>The frontend applies these confidence-based display rules:</p>
+            <ul>
+              <li>If top-1 confidence ≥ <strong>75%</strong> → show only top-1 (model is confident)</li>
+              <li>If top-1 confidence ∈ [35%, 75%) → show top-1 AND top-2</li>
+              <li>If top-1 confidence &lt; <strong>35%</strong> → display "Object Not Detected"</li>
+              <li>If top-2 confidence &lt; 35% (when shown) → display "Object Not Detected" for second slot</li>
+            </ul>
+
+            <h3>Why this approach</h3>
+            <ul>
+              <li><strong>Single binary deployment:</strong> one Python process, one port, one set of files.</li>
+              <li><strong>No model server:</strong> avoids TorchServe complexity for a 3-model demo.</li>
+              <li><strong>Static frontend:</strong> served by the same FastAPI process via <code>StaticFiles</code>.</li>
+              <li><strong>CORS enabled:</strong> permissive in dev, can be tightened for production.</li>
+            </ul>
+          </article>
+
+          <article id="tools" class="doc-section">
+            <h4>Section 12</h4>
+            <h2>Tools &amp; Stack</h2>
+
+            <table class="ref-table">
+              <thead><tr><th>Layer</th><th>Tool</th><th>Why</th></tr></thead>
+              <tbody>
+                <tr><td>Model framework</td><td class="mono">PyTorch 2.5+</td><td class="text-sm">De-facto research standard, AMP-native</td></tr>
+                <tr><td>Pretrained weights</td><td class="mono">timm 1.0+</td><td class="text-sm">Largest curated collection of vision pretraineds</td></tr>
+                <tr><td>Augmentation</td><td class="mono">Kornia</td><td class="text-sm">GPU-native, differentiable, fast</td></tr>
+                <tr><td>Segmentation</td><td class="mono">MobileSAM</td><td class="text-sm">100× lighter than full SAM, comparable masks</td></tr>
+                <tr><td>Backgrounds</td><td class="mono">MIT Indoor 67</td><td class="text-sm">Right scenes for fruit photography contexts</td></tr>
+                <tr><td>XAI</td><td class="mono">pytorch-grad-cam</td><td class="text-sm">Best-maintained Grad-CAM library</td></tr>
+                <tr><td>Splitting</td><td class="mono">scikit-learn</td><td class="text-sm">GroupShuffleSplit for leakage prevention</td></tr>
+                <tr><td>Backend</td><td class="mono">FastAPI + Uvicorn</td><td class="text-sm">Async, type-safe, automatic OpenAPI</td></tr>
+                <tr><td>Frontend</td><td class="mono">HTML + Tailwind + vanilla JS</td><td class="text-sm">No build step, fast iteration</td></tr>
+                <tr><td>Math rendering</td><td class="mono">MathJax 3</td><td class="text-sm">LaTeX support for the methodology page</td></tr>
+                <tr><td>Plotting</td><td class="mono">Matplotlib + Seaborn</td><td class="text-sm">All static analysis charts</td></tr>
+                <tr><td>Hardware</td><td class="mono">RTX 3070 Laptop</td><td class="text-sm">8 GB VRAM, ~145W TGP, AMP-friendly</td></tr>
+              </tbody>
+            </table>
+
+            <h3>Reproducibility</h3>
+            <ul>
+              <li>Random seeds fixed (42) for NumPy and PyTorch</li>
+              <li>cudnn benchmark mode enabled (deterministic only at minor speed cost)</li>
+              <li>Group-aware splits saved to CSV for re-use</li>
+              <li>Model weights saved at best validation accuracy per model</li>
+              <li>All hyperparameters in one config dict per notebook</li>
+            </ul>
+          </article>
+
+          <article class="doc-section pt-8 pb-4 border-t border-gray-800">
+            <p class="text-center text-gray-500 text-sm leading-relaxed">
+              That covers the full pipeline from raw FruitVision images to a deployed multi-model
+              demonstration system. For the live model, head to the <a href="/predict.html" class="text-green-400 hover:underline">Predict tab</a>.
+              For the numerical results, see the <a href="/analysis.html" class="text-green-400 hover:underline">Analysis tab</a>.
+            </p>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="footer-root"></div>
+
+  <script src="/js/nav.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const tocLinks = document.querySelectorAll('.toc-link');
+      const sections = document.querySelectorAll('.doc-section[id]');
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const id = entry.target.id;
+            tocLinks.forEach(link => {
+              if (link.getAttribute('href') === `#${id}`) {
+                link.classList.add('scroll-spy-active');
+              } else {
+                link.classList.remove('scroll-spy-active');
+              }
+            });
+          }
+        });
+      }, { rootMargin: '-25% 0px -65% 0px', threshold: 0 });
+
+      sections.forEach(s => observer.observe(s));
+    });
+  </script>
+</body>
+</html>

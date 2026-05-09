@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FruitVision · Deep Learning for Fruit Defect Detection &amp; Quality Grading</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body class="flex flex-col min-h-screen">
+
+  <div id="navbar-root"></div>
+
+  <main class="flex-grow">
+
+    <section class="relative pt-16 pb-12 px-6">
+      <div class="max-w-5xl mx-auto text-center">
+
+        <div class="fade-in inline-flex items-center gap-2 px-4 py-1.5 mb-6 rounded-full border border-gray-700 bg-black/40 text-sm text-gray-400 font-mono">
+          <span class="pulse-dot"></span>
+          Final Year Project · 2026
+        </div>
+
+        <h1 class="font-display text-4xl md:text-6xl lg:text-7xl leading-tight mb-6 fade-in-delay-1">
+          Deep Learning for
+          <span class="gradient-text">Fruit Defect Detection</span>
+          and Quality Grading
+        </h1>
+
+        <p class="text-lg md:text-xl text-gray-400 mb-3 fade-in-delay-2">
+          With Frontend &amp; Backend Integration
+        </p>
+
+        <p class="max-w-2xl mx-auto text-gray-500 leading-relaxed fade-in-delay-2">
+          A multi-model AI system for non-destructive fruit quality classification and detection of
+          chemical adulteration (formalin treatment) across 5 fruit types and 3 quality conditions.
+        </p>
+
+        <div class="flex flex-wrap items-center justify-center gap-3 mt-8 fade-in-delay-3">
+          <span class="tag">15 Classes</span>
+          <span class="tag tag-blue">3 Hybrid Models</span>
+          <span class="tag tag-orange">Explainable AI</span>
+          <span class="tag tag-muted">9,727 Images</span>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-center gap-3 mt-8 fade-in-delay-4">
+          <a href="/predict.html" class="btn btn-primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+            Try Live Demo
+          </a>
+          <a href="/methodology.html" class="btn btn-secondary">
+            View Methodology
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="px-6 pb-12">
+      <div class="max-w-6xl mx-auto">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 fade-in-delay-3">
+
+          <div class="stat-tile">
+            <div class="label">Best Accuracy</div>
+            <div class="value value-accent">96.85%</div>
+            <div class="text-xs text-gray-500 mt-1">EffNet+SwinT</div>
+          </div>
+
+          <div class="stat-tile">
+            <div class="label">Best Focus Lift</div>
+            <div class="value value-blue">4.62×</div>
+            <div class="text-xs text-gray-500 mt-1">MobileNetV4</div>
+          </div>
+
+          <div class="stat-tile">
+            <div class="label">Smallest Model</div>
+            <div class="value value-orange">12M</div>
+            <div class="text-xs text-gray-500 mt-1">DBA-ViNet · params</div>
+          </div>
+
+          <div class="stat-tile">
+            <div class="label">Total Images</div>
+            <div class="value">9,727</div>
+            <div class="text-xs text-gray-500 mt-1">FruitVision dataset</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section class="px-6 pb-12">
+      <div class="max-w-5xl mx-auto">
+
+        <div class="text-center mb-10">
+          <div class="text-sm font-mono text-gray-500 tracking-widest uppercase mb-2">The Team</div>
+          <h2 class="font-display text-3xl md:text-4xl">
+            Built by <span class="gradient-text">three students</span>
+          </h2>
+          <p class="text-gray-500 mt-2">
+            Vellore Institute of Technology · School of Computer Science
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 fade-in">
+
+          <div class="team-card">
+            <div class="reg-no">22BCE20026</div>
+            <div class="name">Ramana Boina<br/>Venkata Uday Kumar</div>
+          </div>
+
+          <div class="team-card">
+            <div class="reg-no">22BCE7339</div>
+            <div class="name">Mudduluru<br/>Charith Varma</div>
+          </div>
+
+          <div class="team-card">
+            <div class="reg-no">21BCE8851</div>
+            <div class="name">Brahmajosyula<br/>Gowtham</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section class="px-6 pb-16">
+      <div class="max-w-6xl mx-auto">
+
+        <div class="text-center mb-10">
+          <div class="text-sm font-mono text-gray-500 tracking-widest uppercase mb-2">What We Built</div>
+          <h2 class="font-display text-3xl md:text-4xl">
+            Three models, <span class="gradient-text">one mission</span>
+          </h2>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+
+          <div class="glass-card p-6">
+            <div class="flex items-start justify-between mb-4">
+              <div>
+                <div class="text-xs font-mono text-blue-400 tracking-wider mb-1">MODEL A</div>
+                <h3 class="text-xl font-bold">EffNet + SwinT</h3>
+              </div>
+              <span class="tag tag-blue">49M</span>
+            </div>
+            <p class="text-sm text-gray-400 mb-4 leading-relaxed">
+              Parallel late-fusion of EfficientNetV2-S and SwinV2-Tiny.
+              Combines convolutional and transformer features for highest raw accuracy.
+            </p>
+            <div class="grid grid-cols-2 gap-3 pt-4 border-t border-gray-800">
+              <div>
+                <div class="text-xs text-gray-500">Test Accuracy</div>
+                <div class="font-mono text-lg font-bold">96.85%</div>
+              </div>
+              <div>
+                <div class="text-xs text-gray-500">Focus Lift</div>
+                <div class="font-mono text-lg font-bold">1.46×</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass-card p-6">
+            <div class="flex items-start justify-between mb-4">
+              <div>
+                <div class="text-xs font-mono text-orange-400 tracking-wider mb-1">MODEL B</div>
+                <h3 class="text-xl font-bold">DBA-ViNet</h3>
+              </div>
+              <span class="tag tag-orange">12M</span>
+            </div>
+            <p class="text-sm text-gray-400 mb-4 leading-relaxed">
+              Dual-branch attention-guided network. Global ConvNet + tiny transformer
+              on attention-gated local regions. Smallest deployable model.
+            </p>
+            <div class="grid grid-cols-2 gap-3 pt-4 border-t border-gray-800">
+              <div>
+                <div class="text-xs text-gray-500">Test Accuracy</div>
+                <div class="font-mono text-lg font-bold">88.96%</div>
+              </div>
+              <div>
+                <div class="text-xs text-gray-500">Focus Lift</div>
+                <div class="font-mono text-lg font-bold">2.82×</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass-card glass-card-accent p-6">
+            <div class="flex items-start justify-between mb-4">
+              <div>
+                <div class="text-xs font-mono text-green-400 tracking-wider mb-1">MODEL C · BEST</div>
+                <h3 class="text-xl font-bold">MobileNetV4</h3>
+              </div>
+              <span class="tag">37M</span>
+            </div>
+            <p class="text-sm text-gray-300 mb-4 leading-relaxed">
+              Universal Inverted Bottleneck blocks + Mobile MQA attention.
+              Best balance of accuracy, speed, and interpretability for edge deployment.
+            </p>
+            <div class="grid grid-cols-2 gap-3 pt-4 border-t border-gray-700">
+              <div>
+                <div class="text-xs text-gray-500">Test Accuracy</div>
+                <div class="font-mono text-lg font-bold text-green-400">94.98%</div>
+              </div>
+              <div>
+                <div class="text-xs text-gray-500">Focus Lift</div>
+                <div class="font-mono text-lg font-bold text-green-400">4.62×</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="px-6 pb-20">
+      <div class="max-w-4xl mx-auto">
+        <div class="glass-card p-8 md:p-10 text-center" style="background: linear-gradient(135deg, rgba(74,222,128,0.06) 0%, rgba(96,165,250,0.04) 100%);">
+          <h2 class="font-display text-2xl md:text-3xl mb-3">
+            Ready to <span class="gradient-text">test it yourself</span>?
+          </h2>
+          <p class="text-gray-400 mb-6">
+            Upload a fruit image or use your webcam to see all 3 models predict in real time,
+            with Grad-CAM visualizations showing exactly where each model is looking.
+          </p>
+          <a href="/predict.html" class="btn btn-primary">
+            Open Predict Tab
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="footer-root"></div>
+
+  <script src="/js/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analysis · FruitVision</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/css/styles.css" />
+  <style>
+    .toc-link {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.55rem 0.8rem;
+      border-radius: 8px;
+      color: var(--color-text-secondary);
+      text-decoration: none;
+      font-size: 0.88rem;
+      border-left: 2px solid transparent;
+      transition: all 0.15s ease;
+    }
+    .toc-link:hover {
+      background: var(--color-surface);
+      color: var(--color-text-primary);
+      border-left-color: var(--color-accent);
+    }
+    .toc-link .toc-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--color-accent);
+      width: 18px;
+      flex-shrink: 0;
+      font-weight: 600;
+    }
+
+    .chart-section {
+      scroll-margin-top: 80px;
+    }
+    .chart-frame {
+      background: white;
+      border-radius: 12px;
+      padding: 1rem;
+      overflow: hidden;
+    }
+    .chart-frame img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 8px;
+    }
+
+    .metric-callout {
+      background: linear-gradient(135deg, rgba(74, 222, 128, 0.06) 0%, rgba(96, 165, 250, 0.04) 100%);
+      border: 1px solid var(--color-border);
+      border-left: 3px solid var(--color-accent);
+      border-radius: 10px;
+      padding: 1rem 1.2rem;
+    }
+
+    .interpret-box {
+      background: var(--color-bg-elevated);
+      border: 1px solid var(--color-border);
+      border-radius: 10px;
+      padding: 1rem 1.2rem;
+    }
+    .interpret-box h4 {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-bottom: 0.5rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .takeaway {
+      display: flex;
+      gap: 0.6rem;
+      padding: 0.8rem 1rem;
+      background: rgba(74, 222, 128, 0.06);
+      border-left: 3px solid var(--color-accent);
+      border-radius: 6px;
+      font-size: 0.92rem;
+      color: var(--color-text-primary);
+      line-height: 1.55;
+    }
+    .takeaway-warn {
+      background: rgba(251, 191, 36, 0.06);
+      border-left-color: var(--color-warning);
+    }
+
+    .summary-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+    }
+    .summary-table th {
+      text-align: left;
+      padding: 0.7rem 0.9rem;
+      background: var(--color-bg-elevated);
+      color: var(--color-text-muted);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .summary-table td {
+      padding: 0.85rem 0.9rem;
+      border-bottom: 1px solid var(--color-border);
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--color-text-primary);
+    }
+    .summary-table tr:hover td { background: var(--color-surface); }
+    .summary-table .row-name { font-family: 'Inter', sans-serif; font-weight: 600; }
+    .summary-table .winner   { color: var(--color-accent); font-weight: 700; }
+
+    .legend-dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 0.4rem;
+      vertical-align: middle;
+    }
+
+    .scroll-spy-active {
+      color: var(--color-text-primary) !important;
+      background: var(--color-surface);
+      border-left-color: var(--color-accent) !important;
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+  <div id="navbar-root"></div>
+
+  <main class="flex-grow">
+
+    <section class="px-6 py-8">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-xs font-mono text-gray-500 tracking-widest uppercase mb-1">Results &amp; Metrics</div>
+        <h1 class="font-display text-3xl md:text-4xl mb-2">
+          <span class="gradient-text">Analysis</span> &amp; Visualizations
+        </h1>
+        <p class="text-gray-400 max-w-3xl text-sm md:text-base">
+          A guided tour through the 9 most important results from training, validation, and explainability evaluation
+          across all three models. Each chart includes a plain-language interpretation.
+        </p>
+      </div>
+    </section>
+
+    <section class="px-6 pb-8">
+      <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
+
+        <div class="stat-tile">
+          <div class="label">Total Test Images</div>
+          <div class="value">1,460</div>
+          <div class="text-xs text-gray-500 mt-1">Group-aware split</div>
+        </div>
+
+        <div class="stat-tile">
+          <div class="label">Highest Test Acc</div>
+          <div class="value value-blue">96.85%</div>
+          <div class="text-xs text-gray-500 mt-1">EffNet+SwinT</div>
+        </div>
+
+        <div class="stat-tile">
+          <div class="label">Best Focus Lift</div>
+          <div class="value value-accent">4.62×</div>
+          <div class="text-xs text-gray-500 mt-1">MobileNetV4</div>
+        </div>
+
+        <div class="stat-tile">
+          <div class="label">Most Compact</div>
+          <div class="value value-orange">12M</div>
+          <div class="text-xs text-gray-500 mt-1">DBA-ViNet · params</div>
+        </div>
+
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section class="px-6 pb-12">
+      <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <aside class="lg:col-span-3 lg:sticky lg:top-20 lg:self-start">
+          <div class="glass-card p-4">
+            <div class="text-xs font-mono uppercase tracking-widest text-gray-500 mb-3 px-2">Sections</div>
+            <nav class="flex flex-col gap-0.5" id="toc">
+              <a href="#summary"      class="toc-link"><span class="toc-num">01</span><span>Summary Table</span></a>
+              <a href="#training"     class="toc-link"><span class="toc-num">02</span><span>Training Curves</span></a>
+              <a href="#pareto"       class="toc-link"><span class="toc-num">03</span><span>Accuracy vs Focus</span></a>
+              <a href="#confusion"    class="toc-link"><span class="toc-num">04</span><span>Confusion Matrices</span></a>
+              <a href="#per-class"    class="toc-link"><span class="toc-num">05</span><span>Per-Class Recall</span></a>
+              <a href="#formalin"     class="toc-link"><span class="toc-num">06</span><span>Formalin Detection</span></a>
+              <a href="#focus-dist"   class="toc-link"><span class="toc-num">07</span><span>Focus Distributions</span></a>
+              <a href="#gradcam-grid" class="toc-link"><span class="toc-num">08</span><span>Grad-CAM Grid</span></a>
+              <a href="#speed"        class="toc-link"><span class="toc-num">09</span><span>Inference Speed</span></a>
+            </nav>
+          </div>
+
+          <div class="metric-callout mt-4 text-xs leading-relaxed">
+            <div class="font-bold text-green-400 mb-1.5">Quick Glossary</div>
+            <div class="space-y-1.5 text-gray-400">
+              <div><span class="font-mono text-gray-200">Acc</span> · % of test images classified correctly</div>
+              <div><span class="font-mono text-gray-200">Recall</span> · how often class is found when present</div>
+              <div><span class="font-mono text-gray-200">F1</span> · balance of precision and recall</div>
+              <div><span class="font-mono text-gray-200">Focus Lift</span> · how much more model looks at fruit vs random (1.0× = random)</div>
+            </div>
+          </div>
+        </aside>
+
+        <div class="lg:col-span-9 space-y-12">
+
+          <article id="summary" class="chart-section">
+            <div class="flex items-baseline gap-3 mb-4">
+              <span class="font-mono text-sm text-green-400">01</span>
+              <h2 class="font-display text-2xl">Summary Table</h2>
+            </div>
+            <p class="text-gray-400 text-sm mb-5 leading-relaxed">
+              Headline numbers across all three models. The model with the best value in each column is shown
+              in <span class="text-green-400 font-bold">green bold</span>.
+            </p>
+
+            <div class="glass-card p-5 overflow-x-auto mb-4">
+              <table class="summary-table">
+                <thead>
+                  <tr>
+                    <th>Metric</th>
+                    <th>EffNet+SwinT</th>
+                    <th>DBA-ViNet</th>
+                    <th>MobileNetV4</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="row-name">Parameters</td>
+                    <td>49M</td>
+                    <td class="winner">12M</td>
+                    <td>37M</td>
+                  </tr>
+                  <tr>
+                    <td class="row-name">Test Accuracy</td>
+                    <td class="winner">96.85%</td>
+                    <td>88.96%</td>
+                    <td>94.98%</td>
+                  </tr>
+                  <tr>
+                    <td class="row-name">Macro F1</td>
+                    <td class="winner">0.9650</td>
+                    <td>0.8870</td>
+                    <td>0.9480</td>
+                  </tr>
+                  <tr>
+                    <td class="row-name">Mean Confidence</td>
+                    <td class="winner">0.854</td>
+                    <td>0.751</td>
+                    <td>0.802</td>
+                  </tr>
+                  <tr>
+                    <td class="row-name">Focus Lift (XAI)</td>
+                    <td>1.46×</td>
+                    <td>2.82×</td>
+                    <td class="winner">4.62×</td>
+                  </tr>
+                  <tr>
+                    <td class="row-name">Misclassified</td>
+                    <td class="winner">47</td>
+                    <td>165</td>
+                    <td>75</td>
+                  </tr>
+                  <tr>
+                    <td class="row-name">Avg Formalin Recall</td>
+                    <td class="winner">0.96</td>
+                    <td>0.81</td>
+                    <td>0.94</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4">
+              <div class="interpret-box">
+                <h4>What this shows</h4>
+                <p class="text-sm text-gray-300 leading-relaxed">
+                  Three different models, three different sweet spots. EffNet+SwinT wins on raw accuracy.
+                  DBA-ViNet is the smallest. MobileNetV4 dominates interpretability while keeping accuracy strong.
+                </p>
+              </div>
+              <div class="interpret-box">
+                <h4>Why no single winner</h4>
+                <p class="text-sm text-gray-300 leading-relaxed">
+                  Different metrics favor different deployment scenarios. A cloud server cares about accuracy.
+                  An auditor cares about focus lift. A mobile app cares about size + speed. We trained for all three.
+                </p>
+              </div>
+            </div>
+
+            <div class="takeaway mt-4">
+              <div class="font-bold text-green-400 flex-shrink-0">▶</div>
+              <div>
+                <span class="font-bold">MobileNetV4 is the practical winner</span> — only 1.9 percentage points
+                lower accuracy than the leader, but with 3.2× better interpretability and 23% fewer parameters.
+              </div>
+            </div>
+          </article>
+
+          <article id="training" class="chart-section">
+            <div class="flex items-baseline gap-3 mb-4">
+              <span class="font-mono text-sm text-green-400">02</span>
+              <h2 class="font-display text-2xl">Training Curves</h2>
+            </div>
+            <p class="text-gray-400 text-sm mb-5 leading-relaxed">
+              How each model learned across 30 epochs. We track validation accuracy, validation loss,
+              cross-entropy loss, and the Path&nbsp;W attention loss (the soft mask-supervision penalty).
+            </p>
+
+            <div class="chart-frame mb-5">
+              <img src="/assets/analysis/training_curves.png" alt="Training curves for all 3 models" />
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4 mb-4">
+              <div class="interpret-box">
+                <h4>What good training looks like</h4>
+                <ul class="text-sm text-gray-300 leading-relaxed space-y-1.5">
+                  <li>• Validation accuracy rising smoothly</li>
+                  <li>• Validation loss falling (not rising — that signals overfitting)</li>
+                  <li>• Training CE loss eventually plateaus (model has converged)</li>
+                  <li>• Path W attention loss drops early then stabilizes (model learned where to look)</li>
+                </ul>
+              </div>
+              <div class="interpret-box">
+                <h4>What the curves reveal</h4>
+                <ul class="text-sm text-gray-300 leading-relaxed space-y-1.5">
+                  <li>• All 3 models converged cleanly — no divergence, no instability</li>
+                  <li>• EffNet+SwinT plateaus highest, fastest — biggest model</li>
+                  <li>• DBA-ViNet keeps improving longer — small model, harder fight</li>
+                  <li>• Path W loss drops sharply after warmup epoch 3 (when supervision activates)</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="takeaway">
+              <div class="font-bold text-green-400 flex-shrink-0">▶</div>
+              <div>
+                No model overfit. Training and validation curves stay tightly coupled across all 30 epochs,
+                showing the AggressiveAug pipeline + group-aware splits successfully prevented memorization.
+              </div>
+            </div>
+          </article>
+
+          <article id="pareto" class="chart-section">
+            <div class="flex items-baseline gap-3 mb-4">
+              <span class="font-mono text-sm text-green-400">03</span>
+              <h2 class="font-display text-2xl">Accuracy vs Interpretability</h2>
+            </div>
+            <p class="text-gray-400 text-sm mb-5 leading-relaxed">
+              The Pareto frontier visualization. The horizontal axis shows <span class="font-mono text-green-400">Focus Lift</span>
+              (how much more attention falls on the fruit vs random), the vertical axis shows test accuracy,
+              and bubble size shows parameter count.
+            </p>
+
+            <div class="chart-frame mb-5">
+              <img src="/assets/analysis/pareto_frontier.png" alt="Pareto frontier: accuracy vs focus lift" />
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4 mb-4">
+              <div class="interpret-box">
+                <h4>How to read this chart</h4>
+                <p class="text-sm text-gray-300 leading-relaxed mb-2">
+                  Each bubble is a model. Position on the chart shows the tradeoff:
+                </p>
+                <ul class="text-sm text-gray-300 leading-relaxed space-y-1.5">
+                  <li>• <span class="font-bold">Top-right</span> = ideal (accurate AND interpretable)</li>
+                  <li>• <span class="font-bold">Top-left</span> = accurate but black-box</li>
+                  <li>• <span class="font-bold">Bottom-right</span> = interpretable but inaccurate</li>
+                  <li>• <span class="font-bold">Larger bubbles</span> = more parameters (heavier to deploy)</li>
+                </ul>
+              </div>
+              <div class="interpret-box">
+                <h4>Why the &gt;1.8× threshold matters</h4>
+                <p class="text-sm text-gray-300 leading-relaxed">
+                  In XAI literature, a focus lift above 1.8× is the threshold where a model is considered
+                  to be "genuinely looking at the object" rather than relying on background shortcuts.
+                  The dashed green line marks this. MobileNetV4 sits well past it.
+                </p>
+              </div>
+            </div>
+
+            <div class="takeaway">
+              <div class="font-bold text-green-400 flex-shrink-0">▶</div>
+              <div>
+                <span class="font-bold">MobileNetV4 dominates the Pareto frontier</span> — sitting in the top-right,
+                proving you don't have to trade accuracy for interpretability if the architecture is well-designed.
+              </div>
+            </div>
+          </article>
+
+          <article id="confusion" class="chart-section">
+            <div class="flex items-baseline gap-3 mb-4">
+              <span class="font-mono text-sm text-green-400">04</span>
+              <h2 class="font-display text-2xl">Confusion Matrices</h2>
+            </div>
+            <p class="text-gray-400 text-sm mb-5 leading-relaxed">
+              Side-by-side confusion matrices for all three models on the test set. Rows = true class,
+              columns = predicted class. The diagonal shows correct predictions; off-diagonal cells reveal
+              specific failure patterns.
+            </p>
+
+            <div class="chart-frame mb-5">
+              <img src="/assets/analysis/confusion_matrices_grid.png" alt="Confusion matrices for all 3 models" />
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4 mb-4">
+              <div class="interpret-box">
+                <h4>How to read confusion matrices</h4>
+                <ul class="text-sm text-gray-300 leading-relaxed space-y-1.5">
+                  <li>• Diagonal cells = correct predictions (deeper blue = better)</li>
+                  <li>• Off-diagonal cells = errors (the brighter, the more frequent)</li>
+                  <li>• Look for <span class="font-bold text-orange-300">Fresh ↔ Formalin confusion</span> — that's the chemical-detection challenge</li>
+                  <li>• Cross-fruit errors (e.g. Apple→Banana) indicate fundamental visual confusion</li>
+                </ul>
+              </div>
+              <div class="interpret-box">
+                <h4>What the patterns reveal</h4>
+                <ul class="text-sm text-gray-300 leading-relaxed space-y-1.5">
+                  <li>• Almost all errors fall on the Fresh ↔ Formalin axis within each fruit</li>
+                  <li>• No model confuses Apple with Banana — fruit identification is solved</li>
+                  <li>• DBA-ViNet has the most spread errors, but they're concentrated on the right boundary</li>
+                  <li>• Rotten classes have nearly zero errors — visually distinct decay patterns are easy</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="takeaway takeaway-warn">
+              <div class="font-bold text-yellow-400 flex-shrink-0">▶</div>
+              <div>
+                The hardest task isn't telling apart different fruits — it's distinguishing chemically-treated
+                fruits from genuinely fresh ones. This is the central challenge of the project.
+              </div>
+            </div>
+          </article>
+
+          <article id="per-class" class="chart-section">
+            <div class="flex items-baseline gap-3 mb-4">
+              <span class="font-mono text-sm text-green-400">05</span>
+              <h2 class="font-display text-2xl">Per-Class Recall Heatmap</h2>
+            </div>
+            <p class="text-gray-400 text-sm mb-5 leading-relaxed">
+              Recall per class, per model, in a single heatmap. Each cell shows what fraction of that
+              true class was correctly identified.
+            </p>
+
+            <div class="chart-frame mb-5">
+              <img src="/assets/analysis/per_class_recall_heatmap.png" alt="Per-class recall heatmap" />
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4 mb-4">
+              <div class="interpret-box">
+                <h4>Reading the heatmap</h4>
+                <ul class="text-sm text-gray-300 leading-relaxed space-y-1.5">
+                  <li>• Green cells = strong recall (close to 1.0)</li>
+                  <li>• Yellow cells = mediocre (around 0.7–0.85)</li>
+                  <li>• Red cells = weak recall (below 0.7)</li>
+                  <li>• Look across rows to compare classes; across columns to compare models</li>
+                </ul>
+              </div>
+              <div class="interpret-box">
+                <h4>Practical interpretation</h4>
+                <p class="text-sm text-gray-300 leading-relaxed">
+                  A class with low recall means the model often misses that class when it's truly present —
+                  bad for safety-critical detection. Formalin classes are the typical weak points.
+                  EffNet+SwinT achieves uniformly high recall, while DBA-ViNet sacrifices some recall
+                  for its smaller size.
+                </p>
+              </div>
+            </div>
+
+            <div class="takeaway">
+              <div class="font-bold text-green-400 flex-shrink-0">▶</div>
+              <div>
+                Rotten and Fresh classes consistently sit above 0.93 recall across all models.
+                The Formalin row is where models are stress-tested — and where MobileNetV4 punches above its weight.
+              </div>
+            </div>
+          </article>
+
+          <article id="formalin" class="chart-section">
+            <div class="flex items-baseline gap-3 mb-4">
+              <span class="font-mono text-sm text-green-400">06</span>
+              <h2 class="font-display text-2xl">Formalin Detection — The Hardest Task</h2>
+            </div>
+            <p class="text-gray-400 text-sm mb-5 leading-relaxed">
+              Per-fruit recall and precision for the Formalin-Mixed class only. This is what the project
+              is fundamentally about: detecting fruits chemically treated with formalin, even when they
+              visually appear fresh.
+            </p>
+
+            <div class="chart-frame mb-5">
+              <img src="/assets/analysis/formalin_comparison.png" alt="Formalin recall and precision per fruit" />
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4 mb-4">
+              <div class="interpret-box">
+                <h4>Why formalin detection is hard</h4>
+                <p class="text-sm text-gray-300 leading-relaxed">
+                  Formalin preservation <em>masks</em> the natural decay process. A formalin-treated fruit
+                  often looks shinier and "more perfect" than a regular fresh fruit. The signal is
+                  in subtle skin-pore patterns and unnatural sheen — easily missed by models that
+                  focus on background or shape.
+                </p>
+              </div>
+              <div class="interpret-box">
+                <h4>Reading the bars</h4>
+                <ul class="text-sm text-gray-300 leading-relaxed space-y-1.5">
+                  <li>• <span class="font-bold">Recall</span> = of all formalin fruits, how many we caught</li>
+                  <li>• <span class="font-bold">Precision</span> = of all "formalin" predictions, how many were right</li>
+                  <li>• Both matter: missing formalin = food safety risk; false alarm = wasted produce</li>
+                  <li>• The dashed red line marks 0.85 — a typical "deployable" threshold</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="takeaway">
+              <div class="font-bold text-green-400 flex-shrink-0">▶</div>
+              <div>
+                EffNet+SwinT achieves &gt; 0.95 recall on every formalin class — a strong result. MobileNetV4
+                trails by a small margin (~0.02–0.04) while being half the size, making it the
+                most practical choice for actual deployment.
+              </div>
+            </div>
+          </article>
+
+          <article id="focus-dist" class="chart-section">
+            <div class="flex items-baseline gap-3 mb-4">
+              <span class="font-mono text-sm text-green-400">07</span>
+              <h2 class="font-display text-2xl">Focus Score Distributions</h2>
+            </div>
+            <p class="text-gray-400 text-sm mb-5 leading-relaxed">
+              For each test image, we measure what fraction of the Grad-CAM heatmap energy lands inside
+              the actual fruit region (vs the background). Higher = the model genuinely looks at the fruit.
+            </p>
+
+            <div class="chart-frame mb-5">
+              <img src="/assets/analysis/focus_distributions.png" alt="Focus score distributions histogram and box plot" />
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4 mb-4">
+              <div class="interpret-box">
+                <h4>What "focus score" means</h4>
+                <p class="text-sm text-gray-300 leading-relaxed mb-2">
+                  We use SAM-generated masks of the fruit region, then check how much of the model's
+                  attention falls inside that mask:
+                </p>
+                <ul class="text-sm text-gray-300 leading-relaxed space-y-1.5">
+                  <li>• 0.0 = model attends entirely to background</li>
+                  <li>• 0.19 = random baseline (roughly the fraction of pixels inside fruit)</li>
+                  <li>• 1.0 = model attends only to fruit, never background</li>
+                </ul>
+              </div>
+              <div class="interpret-box">
+                <h4>What the distributions reveal</h4>
+                <ul class="text-sm text-gray-300 leading-relaxed space-y-1.5">
+                  <li>• EffNet+SwinT histogram peaks near baseline — uses background features</li>
+                  <li>• DBA-ViNet shifts right substantially — architectural attention works</li>
+                  <li>• MobileNetV4 mass is heavily right-skewed — mostly looks at fruit</li>
+                  <li>• Box plots show median + spread — confirms the same trend</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="takeaway">
+              <div class="font-bold text-green-400 flex-shrink-0">▶</div>
+              <div>
+                This is the smoking-gun XAI evidence. The shift from EffNet (0.27 mean focus) to
+                MobileNetV4 (0.86 mean focus) represents a 3× improvement in
+                <span class="font-bold">where the model actually looks</span> when making decisions.
+              </div>
+            </div>
+          </article>
+
+          <article id="gradcam-grid" class="chart-section">
+            <div class="flex items-baseline gap-3 mb-4">
+              <span class="font-mono text-sm text-green-400">08</span>
+              <h2 class="font-display text-2xl">Grad-CAM Visual Comparison</h2>
+            </div>
+            <p class="text-gray-400 text-sm mb-5 leading-relaxed">
+              The visual proof. For one sample image per class (15 rows), we show the original alongside
+              each model's Grad-CAM overlay. Where each model's heatmap sits tells you what it considered
+              important for that prediction.
+            </p>
+
+            <div class="chart-frame mb-5">
+              <img src="/assets/analysis/gradcam_all_models_per_class.png" alt="Grad-CAM grid: 15 classes × 3 models" />
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4 mb-4">
+              <div class="interpret-box">
+                <h4>How Grad-CAM works</h4>
+                <p class="text-sm text-gray-300 leading-relaxed">
+                  Grad-CAM computes which spatial regions in the input image most increased
+                  the score of the predicted class. Red = strong influence on the decision.
+                  Blue/cool colors = ignored areas. We use late-conv-layer Grad-CAM for all models.
+                </p>
+              </div>
+              <div class="interpret-box">
+                <h4>What to look for in each row</h4>
+                <ul class="text-sm text-gray-300 leading-relaxed space-y-1.5">
+                  <li>• <span class="font-bold text-blue-300">EffNet+SwinT</span> often has heatmaps spilling onto background</li>
+                  <li>• <span class="font-bold text-orange-300">DBA-ViNet</span> centers on fruit but sometimes too narrow</li>
+                  <li>• <span class="font-bold text-green-300">MobileNetV4</span> consistently lights up fruit skin texture</li>
+                  <li>• For Rotten classes, look for hot spots <em>on the decay region itself</em></li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="takeaway">
+              <div class="font-bold text-green-400 flex-shrink-0">▶</div>
+              <div>
+                A picture is worth a thousand metrics. Scrolling through this grid is the single most
+                convincing demonstration that interpretability is real — not just a number we report.
+              </div>
+            </div>
+          </article>
+
+          <article id="speed" class="chart-section">
+            <div class="flex items-baseline gap-3 mb-4">
+              <span class="font-mono text-sm text-green-400">09</span>
+              <h2 class="font-display text-2xl">Inference Speed</h2>
+            </div>
+            <p class="text-gray-400 text-sm mb-5 leading-relaxed">
+              Wall-clock latency per image (256×256, AMP, single image). Measured on the development
+              hardware: NVIDIA RTX 3070 Laptop with 8 GB VRAM.
+            </p>
+
+            <div class="chart-frame mb-5">
+              <img src="/assets/analysis/inference_speed.png" alt="Inference speed comparison" />
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4 mb-4">
+              <div class="interpret-box">
+                <h4>Why latency matters</h4>
+                <ul class="text-sm text-gray-300 leading-relaxed space-y-1.5">
+                  <li>• Real-time applications need &lt; 100ms (10+ FPS)</li>
+                  <li>• Mobile devices typically run 5–15× slower than desktop GPUs</li>
+                  <li>• Batch processing benefits from larger throughput, not lower latency</li>
+                  <li>• Edge accelerators (Edge TPU, Apple Neural Engine) further amplify these gaps</li>
+                </ul>
+              </div>
+              <div class="interpret-box">
+                <h4>Reading the bars</h4>
+                <ul class="text-sm text-gray-300 leading-relaxed space-y-1.5">
+                  <li>• <span class="font-bold text-blue-300">EffNet+SwinT</span> heaviest — two backbones running in parallel</li>
+                  <li>• <span class="font-bold text-orange-300">DBA-ViNet</span> middle — single backbone + small transformer</li>
+                  <li>• <span class="font-bold text-green-300">MobileNetV4</span> fastest — UIB + Mobile MQA optimized for hardware</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="takeaway">
+              <div class="font-bold text-green-400 flex-shrink-0">▶</div>
+              <div>
+                MobileNetV4 isn't just the most interpretable — it's also the fastest. This is the
+                trifecta required for actual deployment: accurate, interpretable, and fast.
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section class="px-6 pb-16">
+      <div class="max-w-5xl mx-auto">
+        <div class="glass-card p-8 md:p-10 text-center" style="background: linear-gradient(135deg, rgba(74,222,128,0.06) 0%, rgba(96,165,250,0.04) 100%);">
+          <h2 class="font-display text-2xl md:text-3xl mb-3">
+            Curious how we <span class="gradient-text">built this?</span>
+          </h2>
+          <p class="text-gray-400 mb-6 max-w-2xl mx-auto">
+            The Methodology tab walks through every decision: dataset preparation, augmentation pipeline,
+            architecture choices, training regime, and explainability setup.
+          </p>
+          <a href="/methodology.html" class="btn btn-primary">
+            Read Methodology
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="footer-root"></div>
+
+  <script src="/js/nav.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const tocLinks = document.querySelectorAll('.toc-link');
+      const sections = document.querySelectorAll('.chart-section');
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const id = entry.target.id;
+            tocLinks.forEach(link => {
+              if (link.getAttribute('href') === `#${id}`) {
+                link.classList.add('scroll-spy-active');
+              } else {
+                link.classList.remove('scroll-spy-active');
+              }
+            });
+          }
+        });
+      }, { rootMargin: '-30% 0px -60% 0px', threshold: 0 });
+
+      sections.forEach(s => observer.observe(s));
+    });
+  </script>
+</body>
+</html>

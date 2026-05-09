@@ -1,0 +1,409 @@
+:root {
+  --color-bg: #0a0e14;
+  --color-bg-elevated: #131820;
+  --color-surface: #1a2029;
+  --color-surface-hover: #232b37;
+  --color-border: #2a3441;
+  --color-border-bright: #3a4655;
+
+  --color-text-primary: #e8edf2;
+  --color-text-secondary: #9aa5b4;
+  --color-text-muted: #6b7585;
+
+  --color-accent: #4ade80;
+  --color-accent-hover: #22c55e;
+  --color-accent-dim: rgba(74, 222, 128, 0.12);
+  --color-accent-glow: rgba(74, 222, 128, 0.35);
+
+  --color-blue: #60a5fa;
+  --color-orange: #fb923c;
+  --color-green: #4ade80;
+
+  --color-warning: #fbbf24;
+  --color-danger: #f87171;
+
+  --gradient-hero: linear-gradient(135deg, #4ade80 0%, #22d3ee 50%, #818cf8 100%);
+  --gradient-card: linear-gradient(180deg, rgba(74, 222, 128, 0.04) 0%, rgba(74, 222, 128, 0) 100%);
+
+  --shadow-soft: 0 4px 16px rgba(0, 0, 0, 0.25);
+  --shadow-elevated: 0 12px 40px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 0 40px var(--color-accent-glow);
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background:
+    radial-gradient(ellipse at 15% 0%, rgba(74, 222, 128, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 100%, rgba(96, 165, 250, 0.06) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--color-bg); }
+::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-border-bright); }
+
+.font-display { font-family: 'Inter', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
+.font-mono { font-family: 'JetBrains Mono', 'Courier New', monospace; }
+
+.gradient-text {
+  background: var(--gradient-hero);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.glass-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-border-bright), transparent);
+}
+
+.glass-card:hover {
+  border-color: var(--color-border-bright);
+  box-shadow: var(--shadow-elevated);
+  transform: translateY(-2px);
+}
+
+.glass-card-accent {
+  background: linear-gradient(180deg, var(--color-accent-dim) 0%, var(--color-surface) 100%);
+  border: 1px solid var(--color-accent);
+  box-shadow: var(--shadow-glow);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.4rem;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+  text-decoration: none;
+  user-select: none;
+}
+
+.btn-primary {
+  background: var(--color-accent);
+  color: #0a0e14;
+  border-color: var(--color-accent);
+}
+.btn-primary:hover:not(:disabled) {
+  background: var(--color-accent-hover);
+  box-shadow: 0 0 20px var(--color-accent-glow);
+  transform: translateY(-1px);
+}
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  border-color: var(--color-border);
+}
+.btn-secondary:hover:not(:disabled) {
+  background: var(--color-surface-hover);
+  border-color: var(--color-border-bright);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--color-text-secondary);
+  border: 1px solid transparent;
+}
+.btn-ghost:hover {
+  color: var(--color-text-primary);
+  background: var(--color-surface);
+}
+
+.nav-shell {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(10, 14, 20, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.nav-link {
+  position: relative;
+  padding: 0.6rem 1.1rem;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+  font-size: 0.95rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.nav-link:hover {
+  color: var(--color-text-primary);
+  background: var(--color-surface);
+}
+
+.nav-link.active {
+  color: var(--color-accent);
+  background: var(--color-accent-dim);
+}
+
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -1px;
+  transform: translateX(-50%);
+  width: 24px;
+  height: 2px;
+  background: var(--color-accent);
+  border-radius: 2px;
+}
+
+.menu-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 0.4rem;
+  min-width: 220px;
+  box-shadow: var(--shadow-elevated);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-8px);
+  transition: all 0.2s ease;
+  z-index: 110;
+}
+
+.menu-dropdown.open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.menu-dropdown a {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.7rem 0.9rem;
+  border-radius: 8px;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  transition: all 0.15s ease;
+  font-size: 0.92rem;
+}
+
+.menu-dropdown a:hover {
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+}
+
+.menu-dropdown a.active {
+  color: var(--color-accent);
+  background: var(--color-accent-dim);
+}
+
+.menu-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.team-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  padding: 1.6rem 1.4rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.team-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--gradient-hero);
+  opacity: 0.6;
+}
+
+.team-card:hover {
+  border-color: var(--color-accent);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-elevated);
+}
+
+.team-card:hover::before {
+  opacity: 1;
+  width: 6px;
+}
+
+.team-card .reg-no {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  color: var(--color-accent);
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.team-card .name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+.fade-in {
+  animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in-delay-1 { animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.1s both; }
+.fade-in-delay-2 { animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both; }
+.fade-in-delay-3 { animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.3s both; }
+.fade-in-delay-4 { animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.4s both; }
+
+.pulse-dot {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-accent);
+}
+.pulse-dot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--color-accent);
+  animation: pulse 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 0.7; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+.stat-tile {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 1.2rem 1.4rem;
+  transition: all 0.2s ease;
+}
+.stat-tile:hover {
+  border-color: var(--color-border-bright);
+}
+.stat-tile .label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.4rem;
+}
+.stat-tile .value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.02em;
+}
+.stat-tile .value-accent { color: var(--color-accent); }
+.stat-tile .value-blue   { color: var(--color-blue); }
+.stat-tile .value-orange { color: var(--color-orange); }
+
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-border-bright), transparent);
+  margin: 3rem 0;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.8rem;
+  background: var(--color-accent-dim);
+  color: var(--color-accent);
+  border-radius: 100px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.04em;
+  border: 1px solid var(--color-accent);
+}
+
+.tag-blue   { background: rgba(96, 165, 250, 0.12);  color: var(--color-blue);   border-color: var(--color-blue); }
+.tag-orange { background: rgba(251, 146, 60, 0.12);  color: var(--color-orange); border-color: var(--color-orange); }
+.tag-muted  { background: var(--color-surface);      color: var(--color-text-secondary); border-color: var(--color-border); }
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--color-border);
+  border-top-color: var(--color-accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  .nav-link { padding: 0.5rem 0.7rem; font-size: 0.88rem; }
+  .stat-tile .value { font-size: 1.3rem; }
+  .team-card { padding: 1.2rem 1.1rem; }
+  .team-card .name { font-size: 1rem; }
+}
